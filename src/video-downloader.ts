@@ -5,7 +5,6 @@ import { join } from "path";
 import asyncPool from "tiny-async-pool";
 import ffmpeg from "fluent-ffmpeg";
 
-import { ChatDownloader } from "./chat-downloader";
 import { Downloader } from "./downloader";
 import { VideoFragmentsFetcher } from "./video-fragments";
 import { VideoManifiest } from "./video-manifiest";
@@ -131,6 +130,7 @@ export class VideoDownloader extends EventEmitter {
         const downloader = new Downloader(url, path);
 
         downloader.on("fragment-downloaded", (fragment) => {
+            this.emit("fragment-downloaded", fragment);
             this._videoFragmentsDownloaded.push(fragment);
             const percentage = (this._videoFragmentsDownloaded.length / this._totalVideoFragments) * 100;
 
@@ -140,12 +140,6 @@ export class VideoDownloader extends EventEmitter {
         await downloader.download();
 
         return name;
-    }
-
-    public async downloadChat() {
-        const chatDownloader = new ChatDownloader(this._vodID, this._clientID);
-
-        return chatDownloader.download();
     }
 
     public transcode(videoSaved: HslVideo, options?: TranscodeOptions): Promise<MkvVideo> {

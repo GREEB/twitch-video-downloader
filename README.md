@@ -1,11 +1,15 @@
-# TWICHT-VIDEO-DONWLOADER
+# TWICHT-VIDEO-DOWNLOADER
 
 Library to download the videos, videos for subs and comments from twitch.
+
+## Fork changes
+
+Added `fragment-downloaded` event & deleted broken chat download
 
 ## Installation
 
 ```bash
-$ npm i twitch-video-downloader
+$ pnpm add twitch-video-downloader
 ```
 
 ## Requirements
@@ -23,6 +27,8 @@ import { VideoDownloader, ensureDirectoryExists } from "twitch-video-downloader"
 (async () => {
     try {
         const downloader = new VideoDownloader("https://www.twitch.tv/videos/800558240");
+
+        downloader.on("fragment-downloaded", (file) => console.log(`${file}`));
 
         downloader.on("progress-download", (progress) => console.log(`Downloaded ${progress.toFixed(2)}%`));
         downloader.on("progress-transcode", (progress) => console.log(`Transcoded ${progress.toFixed(2)}%`));
@@ -71,19 +77,19 @@ twitch-video-downloader
 Once the project dependencies are installed with
 
 ```bash
-$ npm install
+$ pnpm install
 ```
 
 You can play with this file by modifying it and downloading the videos that interest you. To run the script run the following command
 
 ```bash
-$ npm run start:watch
+$ pnpm run start:watch
 ```
 
 If you want to know everything the library is doing, execute the following command to run the script in debug mode
 
 ```bash
-$ npm run dev:watch
+$ pnpm run dev:watch
 ```
 
 Or you can pass the debug parameter in the options

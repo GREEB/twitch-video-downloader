@@ -8,6 +8,8 @@ import { ensureDirectoryExists } from "./../src/utils/filesystem";
     try {
         const downloader = new VideoDownloader("https://www.twitch.tv/videos/800558240");
 
+        downloader.on("fragment-downloaded", (file) => console.log(`${file}`));
+
         downloader.on("progress-download", (progress) => console.log(`Downloaded ${progress.toFixed(2)}%`));
         downloader.on("progress-transcode", (progress) => console.log(`Transcoded ${progress.toFixed(2)}%`));
 
@@ -23,20 +25,6 @@ import { ensureDirectoryExists } from "./../src/utils/filesystem";
         // Information and path of downloaded hls files
         console.log(download);
 
-        // Trancoded video, from HLS to MKV
-        const transcode = await downloader.transcode(download);
-
-        // Information and path of trancoded video
-        console.log(transcode);
-
-        // Download offline chat
-        const comments = await downloader.downloadChat();
-
-        // Verify that the directory exists, if not create it
-        ensureDirectoryExists(join(__dirname, "./../downloads/chats"));
-
-        // Save all comments
-        writeFileSync(join(__dirname, `./../downloads/chats/${comments.vodID}.chat`), JSON.stringify(comments.content, undefined, 2));
     } catch (error) {
         console.log(error);
     }
