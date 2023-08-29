@@ -73,7 +73,7 @@ export class VideoDownloader extends EventEmitter {
         return resolutions;
     }
 
-    public async download(video: VideoDownloadInformation): Promise<HslVideo> {
+    public async download(video: VideoDownloadInformation, fragmentsWeHave: string[]): Promise<HslVideo> {
         if (!video || !video.quality || !video.resolution || !video.url) {
             log(`[VideoDownloader] Video download request failed, invalid video information, object must have quality, resolution, and url fields`);
             log(JSON.stringify(video, undefined, 2));
@@ -97,6 +97,7 @@ export class VideoDownloader extends EventEmitter {
         writeFileSync(`${this._pathFolder}/index.m3u8`, rawContent);
 
         if (fragments.length > 0) {
+            const fragmentsToDownload = fragments.filter(fragment => !fragmentsWeHave.includes(fragment[0]));            
             this._videoFragmentsDownloaded = []; // Reset the array for new downloads
             this._totalVideoFragments = fragments.length;
             log(`[VideoDownloader] Total fragments of video is ${this._totalVideoFragments}.`);
@@ -105,7 +106,7 @@ export class VideoDownloader extends EventEmitter {
                 quality: this._quality,
                 folderPath: this._pathFolder
             });
-            await this._downloadFragments(fragments);
+            await this._downloadFragments(fragmentsToDownload);
         } else {
             log(`[VideoDownloader] Not found fragments of VodID ${this._vodID}.`);
             throw new Error(ERRORS.NOT_FOUND_FRAGMENTS);

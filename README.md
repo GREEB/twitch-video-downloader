@@ -4,7 +4,8 @@ Library to download the videos, videos for subs and comments from twitch.
 
 ## Fork changes
 
-Added `fragment-downloaded` event & deleted broken chat download
+- Added `fragment-downloaded` event & deleted broken chat download
+- Added array that can be passed to download to filter fragments we already have
 
 ## Installation
 
@@ -221,7 +222,7 @@ const downloader = new VideoDownloader("https://www.twitch.tv/videos/800558240")
 const resolutions = await downloader.getVideoResolutionsAvailable();
 
 // Donwload specific resolution
-const download = await downloader.download(resolutions[0]);
+const download = await downloader.download(resolutions[0], []);
 ```
 
 Once the function is finished executing, it returns an object with the following information
