@@ -98,7 +98,7 @@ export class VideoDownloader extends EventEmitter {
 
         if (fragments.length > 0) {
             const fragmentsToDownload = fragments.filter(fragment => !fragmentsWeHave.includes(fragment[0]));            
-            this._videoFragmentsDownloaded = []; // Reset the array for new downloads
+            this._videoFragmentsDownloaded = fragmentsWeHave.map((e)=>parseInt(e.split('.')[0])); // Reset the array for new downloads
             this._totalVideoFragments = fragments.length;
             log(`[VideoDownloader] Total fragments of video is ${this._totalVideoFragments}.`);
             this.emit("start-download", {
