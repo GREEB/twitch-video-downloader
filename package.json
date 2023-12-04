@@ -1,6 +1,6 @@
 {
   "name": "twitch-video-downloader-plus",
-  "version": "1.6.5",
+  "version": "1.6.6",
   "description": "A library to download twitch videos",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
