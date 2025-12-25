@@ -173,7 +173,7 @@ export class VideoDownloader extends EventEmitter {
                     log(`[VideoDownloader] Transcode start, commands: ${commands}`);
                     this.emit("start-transcode", commands);
                 })
-                .on("end", (err, stdout, stderr) => {
+                .on("end", (err) => {
                     if (err) {
                         log(`[VideoDownloader] Transcode error: ${err}`);
                         return reject(err);

@@ -65,8 +65,11 @@ export class Downloader extends EventEmitter {
                         this._handlerError(error, reject);
                     });
                 };
-
+                console.log(`requesting this fragment: ${this._url}`);
+                
                 const request = https.get(this._url, (response) => {
+                    console.log(response);
+                    
                     if (response.statusCode != 200) {
                         handlerError(response.statusMessage);
                     }
